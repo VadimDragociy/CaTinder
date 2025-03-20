@@ -1,0 +1,32 @@
+name: catinder
+description: "A university project (MIPT) about a tinder-alike app for(?) cats"
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.7.0
+
+dependencies:
+  flutter_launcher_icons: ^0.13.1
+  dio: ^5.4.0
+  cached_network_image: ^3.3.0
+  flutter_swipe_detector:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter_icons:
+  android: true
+  image_path: "assets/icon/tinder.png"
+
+flutter:
+  assets:
+    - assets/heart-24.png
+    - assets/cross-24.png
+  uses-material-design: true
