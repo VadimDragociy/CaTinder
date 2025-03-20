@@ -20,3 +20,10 @@ https://icons8.com/icons/ - interface icons
 
 ## Cсылка для скачивания:
 https://drive.google.com/drive/folders/1KYOuFlgFuQFpvD8hSipWtp19D5vnMT7x?usp=drive_link
+
+
+## Код
+/assets содержит иконки и интерфейсные иконки
+/lib содержит main.dart и подпапки
+/lib/screens содержит виджеты экранов
+/lib/buttons используемые в приложении кнопки
