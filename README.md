@@ -2,7 +2,11 @@
 https://www.flaticon.com/free-icons/dating-app - icon
 https://icons8.com/icons/ - interface icons
 
-Приложение для просмотра котов
+Приложение для просмотра котов, Кототиндер - дз по Flutter №1
+
+Реализованы все технические и функциональные требования, код проходит статический анализ 
+
+не сделано с душой(
 
 # Главная страница:
 ![image](https://github.com/user-attachments/assets/fa0f0685-682d-41c4-9d5e-e076190bf1b7)
