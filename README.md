@@ -23,7 +23,7 @@ https://drive.google.com/drive/folders/1KYOuFlgFuQFpvD8hSipWtp19D5vnMT7x?usp=dri
 
 
 ## Код
-/assets содержит иконки и интерфейсные иконки
-/lib содержит main.dart и подпапки
-/lib/screens содержит виджеты экранов
-/lib/buttons используемые в приложении кнопки
+- /assets содержит иконки и интерфейсные иконки
+- /lib содержит main.dart и подпапки
+- /lib/screens содержит виджеты экранов
+- /lib/buttons используемые в приложении кнопки
