@@ -1,149 +1,142 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:catinder/buttons/like_dislike_buttons.dart';
-import 'package:catinder/screens/detailed_screen.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
+// screens/home_screen.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../blocs/cat_bloc.dart';
+import '../../blocs/liked_cat_cubit.dart';
+import 'detailed_screen.dart';
+import 'liked_cats_screen.dart';
 
-class CatHomePage extends StatefulWidget {
+class CatHomePage extends StatelessWidget {
   const CatHomePage({super.key});
 
   @override
-  State<CatHomePage> createState() => _CatHomePageState();
-}
-
-class _CatHomePageState extends State<CatHomePage> {
-  String imageUrl = '';
-  String breedName = '';
-  String description = '';
-  int likeCount = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    fetchCat();
-  }
-
-  Future<void> fetchCat() async {
-    try {
-      bool validCat = false;
-      while (!validCat) {
-        final response = await Dio().get(
-          'https://api.thecatapi.com/v1/images/search',
-          queryParameters: {'limit': 1, 'has_breeds': true},
-          options: Options(
-            headers: {
-              'x-api-key':
-                  'live_MdrOzTfhdteXurMEPUuHGlsSwqbbQRfwVD2TgpGxIl67UnSAWEtPEBbNj7q62mD5',
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Cat Tinder'),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.favorite),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const LikedCatsScreen()),
+              );
             },
           ),
-        );
-        if (response.data != null && response.data.isNotEmpty) {
-          final catData = response.data[0];
-          if (catData['breeds'] != null && catData['breeds'].isNotEmpty) {
-            setState(() {
-              imageUrl = catData['url'] ?? '';
-              breedName = catData['breeds'][0]['name'] ?? 'Unknown';
-              description =
-                  catData['breeds'][0]['description'] ??
-                  'No description available';
-            });
-            validCat = true;
-          }
-        }
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print('Error fetching cat: $e');
-      }
-    }
-  }
-
-  void likeCat() {
-    setState(() {
-      likeCount++;
-    });
-    fetchCat();
-  }
-
-  void dislikeCat() {
-    fetchCat();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-    return Scaffold(
-      appBar: AppBar(title: const Text('Cat Tinder'), centerTitle: true),
-      body: GestureDetector(
-        onHorizontalDragEnd: (details) {
-          if (details.primaryVelocity! > 0) {
-            dislikeCat();
-          } else if (details.primaryVelocity! < 0) {
-            likeCat();
-          }
-        },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder:
-                        (context) => CatDetailPage(
-                          imageUrl: imageUrl,
-                          breedName: breedName,
-                          description: description,
-                        ),
-                  ),
-                );
-              },
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CachedNetworkImage(
-                    imageUrl: imageUrl,
-                    height: screenHeight / 3,
-                    width: screenWidth,
-                    fit: BoxFit.cover,
-                    placeholder:
-                        (context, url) => const CircularProgressIndicator(),
-                  ),
-                  SizedBox(height: screenHeight / 20),
-                  Column(
-                    children: [
-                      Text(
-                        breedName,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: screenHeight / 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          LikeButton(onPressed: likeCat),
-                          SizedBox(width: screenWidth / 20),
-                          DislikeButton(onPressed: dislikeCat),
-                        ],
-                      ),
-                      SizedBox(height: screenHeight / 10),
-                      Text(
-                        'Likes: $likeCount',
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                    ],
-                  ),
+        ],
+      ),
+      body: BlocConsumer<CatBloc, CatState>(
+        listener: (context, state) {
+          if (state is CatError) {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('Ошибка сети'),
+                content: Text(state.message),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('ОК'),
+                  )
                 ],
               ),
-            ),
-          ],
-        ),
+            );
+          }
+        },
+        builder: (context, state) {
+          if (state is CatLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (state is CatLoaded) {
+            final cat = state.cat;
+            return GestureDetector(
+              onHorizontalDragEnd: (details) {
+                if (details.primaryVelocity! > 0) {
+                  context.read<CatBloc>().add(FetchCat());
+                } else if (details.primaryVelocity! < 0) {
+                  context.read<LikedCatCubit>().addLikedCat(cat);
+                  context.read<CatBloc>().add(FetchCat());
+                }
+              },
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => CatDetailPage(
+                              imageUrl: cat.imageUrl,
+                              breedName: cat.breedName,
+                              description: cat.description,
+                            ),
+                          ),
+                        );
+                      },
+                      child: Column(
+                        children: [
+                          Image.network(
+                            cat.imageUrl,
+                            height: MediaQuery.of(context).size.height / 3,
+                            width: MediaQuery.of(context).size.width,
+                            fit: BoxFit.cover,
+                          ),
+                          const SizedBox(height: 20),
+                          Text(
+                            cat.breedName,
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  context.read<CatBloc>().add(FetchCat());
+                                },
+                                child: Image.asset('assets/cross-24.png'),
+                              ),
+                              const SizedBox(width: 20),
+                              ElevatedButton(
+                                onPressed: () {
+                                  context.read<LikedCatCubit>().addLikedCat(cat);
+                                  context.read<CatBloc>().add(FetchCat());
+                                },
+                                child: Image.asset('assets/heart-24.png'),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+          return const SizedBox.shrink();
+        },
       ),
+      bottomNavigationBar: BlocBuilder<LikedCatCubit, LikedCatState>(
+        builder: (context, state) {
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              'Liked cats: ${state.likeCount}',
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            ),
+          );
+        },
+      ),
+
     );
   }
 }

@@ -1,3 +1,4 @@
+// screens/detailed_screen.dart
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -17,24 +18,27 @@ class CatDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(breedName)),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CachedNetworkImage(
-            imageUrl: imageUrl,
-            height: 300,
-            fit: BoxFit.cover,
-          ),
-          const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              description,
-              style: const TextStyle(fontSize: 16),
-              textAlign: TextAlign.center,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            CachedNetworkImage(
+              imageUrl: imageUrl,
+              height: 300,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
             ),
-          ),
-        ],
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                description,
+                style: const TextStyle(fontSize: 16),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
