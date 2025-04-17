@@ -32,6 +32,9 @@ https://drive.google.com/drive/u/1/folders/1KYOuFlgFuQFpvD8hSipWtp19D5vnMT7x
 
 ## Код
 - /assets содержит иконки и интерфейсные иконки
-- /lib содержит main.dart и подпапки
+- /lib содержит main.dart, injection_container.dart и подпапки
 - /lib/screens содержит виджеты экранов
-- /lib/buttons используемые в приложении кнопки
+- /lib/models содержит модели котика и лайкнутого котика (с датой)
+- /lib/data/cat_repository.dart - подгрузка новых котов
+- /lib/domain/usecases/get_random_cat.dart - получение рандомного котика
+- /lib/blocs - Bloc: загрузка котика, обработка состояний загрузки и ошибок; Cubit: хранение списка лайкнутых котиков, добавление и удаление карточки, фильтрация по породе
