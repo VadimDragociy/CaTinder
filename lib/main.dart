@@ -1,8 +1,29 @@
-import 'package:catinder/screens/home_screen.dart';
+// main.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:catinder/injection_container.dart';
+import 'package:catinder/data/cat_repository.dart';
+import 'package:catinder/domain/usecases/get_random_cat.dart';
+import 'package:catinder/blocs/cat_bloc.dart';
+import 'package:catinder/blocs/liked_cat_cubit.dart';
+import 'package:catinder/screens/home_screen.dart';
 
 void main() {
-  runApp(const CatApp());
+  setup();
+  final catRepository = sl<CatRepository>();
+  final getRandomCat = GetRandomCat(catRepository);
+
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => CatBloc(getRandomCat: getRandomCat)..add(FetchCat()),
+        ),
+        BlocProvider(create: (_) => LikedCatCubit()),
+      ],
+      child: const CatApp(),
+    ),
+  );
 }
 
 class CatApp extends StatelessWidget {
