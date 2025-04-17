@@ -28,7 +28,7 @@ https://icons8.com/icons/ - interface icons
 
 ## Cсылка для скачивания:
 https://drive.google.com/drive/u/1/folders/1KYOuFlgFuQFpvD8hSipWtp19D5vnMT7x
-
+(CaTinder Pro)
 
 ## Код
 - /assets содержит иконки и интерфейсные иконки
