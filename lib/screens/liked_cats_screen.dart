@@ -1,8 +1,8 @@
 // screens/liked_cats_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../blocs/liked_cat_cubit.dart';
-import 'detailed_screen.dart';
+import 'package:catinder/blocs/liked_cat_cubit.dart';
+import 'package:catinder/screens/detailed_screen.dart';
 
 class LikedCatsScreen extends StatelessWidget {
   const LikedCatsScreen({super.key});
@@ -13,7 +13,6 @@ class LikedCatsScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('Лайкнутые котики')),
       body: Column(
         children: [
-          // Поле фильтрации по породе
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
@@ -29,7 +28,8 @@ class LikedCatsScreen extends StatelessWidget {
           Expanded(
             child: BlocBuilder<LikedCatCubit, LikedCatState>(
               builder: (context, state) {
-                final likedCats = context.read<LikedCatCubit>().filteredLikedCats;
+                final likedCats =
+                    context.read<LikedCatCubit>().filteredLikedCats;
                 if (likedCats.isEmpty) {
                   return const Center(child: Text('Нет лайкнутых котиков'));
                 }
@@ -53,18 +53,21 @@ class LikedCatsScreen extends StatelessWidget {
                         trailing: IconButton(
                           icon: const Icon(Icons.delete, color: Colors.red),
                           onPressed: () {
-                            context.read<LikedCatCubit>().removeLikedCat(likedCat);
+                            context.read<LikedCatCubit>().removeLikedCat(
+                              likedCat,
+                            );
                           },
                         ),
                         onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => CatDetailPage(
-                                imageUrl: likedCat.cat.imageUrl,
-                                breedName: likedCat.cat.breedName,
-                                description: likedCat.cat.description,
-                              ),
+                              builder:
+                                  (_) => CatDetailPage(
+                                    imageUrl: likedCat.cat.imageUrl,
+                                    breedName: likedCat.cat.breedName,
+                                    description: likedCat.cat.description,
+                                  ),
                             ),
                           );
                         },

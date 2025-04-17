@@ -1,12 +1,12 @@
 // main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'injection_container.dart';
-import 'data/cat_repository.dart';
-import 'domain/usecases/get_random_cat.dart';
-import 'blocs/cat_bloc.dart';
-import 'blocs/liked_cat_cubit.dart';
-import 'screens/home_screen.dart';
+import 'package:catinder/injection_container.dart';
+import 'package:catinder/data/cat_repository.dart';
+import 'package:catinder/domain/usecases/get_random_cat.dart';
+import 'package:catinder/blocs/cat_bloc.dart';
+import 'package:catinder/blocs/liked_cat_cubit.dart';
+import 'package:catinder/screens/home_screen.dart';
 
 void main() {
   setup();
@@ -38,4 +38,3 @@ class CatApp extends StatelessWidget {
     );
   }
 }
-

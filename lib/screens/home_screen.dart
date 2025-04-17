@@ -1,10 +1,10 @@
 // screens/home_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../blocs/cat_bloc.dart';
-import '../../blocs/liked_cat_cubit.dart';
-import 'detailed_screen.dart';
-import 'liked_cats_screen.dart';
+import 'package:catinder/blocs/cat_bloc.dart';
+import 'package:catinder/blocs/liked_cat_cubit.dart';
+import 'package:catinder/screens/detailed_screen.dart';
+import 'package:catinder/screens/liked_cats_screen.dart';
 
 class CatHomePage extends StatelessWidget {
   const CatHomePage({super.key});
@@ -32,16 +32,17 @@ class CatHomePage extends StatelessWidget {
           if (state is CatError) {
             showDialog(
               context: context,
-              builder: (context) => AlertDialog(
-                title: const Text('Ошибка сети'),
-                content: Text(state.message),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('ОК'),
-                  )
-                ],
-              ),
+              builder:
+                  (context) => AlertDialog(
+                    title: const Text('Ошибка сети'),
+                    content: Text(state.message),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('ОК'),
+                      ),
+                    ],
+                  ),
             );
           }
         },
@@ -69,11 +70,12 @@ class CatHomePage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => CatDetailPage(
-                              imageUrl: cat.imageUrl,
-                              breedName: cat.breedName,
-                              description: cat.description,
-                            ),
+                            builder:
+                                (_) => CatDetailPage(
+                                  imageUrl: cat.imageUrl,
+                                  breedName: cat.breedName,
+                                  description: cat.description,
+                                ),
                           ),
                         );
                       },
@@ -106,7 +108,9 @@ class CatHomePage extends StatelessWidget {
                               const SizedBox(width: 20),
                               ElevatedButton(
                                 onPressed: () {
-                                  context.read<LikedCatCubit>().addLikedCat(cat);
+                                  context.read<LikedCatCubit>().addLikedCat(
+                                    cat,
+                                  );
                                   context.read<CatBloc>().add(FetchCat());
                                 },
                                 child: Image.asset('assets/heart-24.png'),
@@ -136,7 +140,6 @@ class CatHomePage extends StatelessWidget {
           );
         },
       ),
-
     );
   }
 }

@@ -1,6 +1,6 @@
 // data/cat_repository.dart
 import 'package:dio/dio.dart';
-import '../models/cat.dart';
+import 'package:catinder/models/cat.dart';
 
 class CatRepository {
   final Dio dio;
@@ -12,7 +12,8 @@ class CatRepository {
       queryParameters: {'limit': 1, 'has_breeds': true},
       options: Options(
         headers: {
-          'x-api-key': 'live_MdrOzTfhdteXurMEPUuHGlsSwqbbQRfwVD2TgpGxIl67UnSAWEtPEBbNj7q62mD5',
+          'x-api-key':
+              'live_MdrOzTfhdteXurMEPUuHGlsSwqbbQRfwVD2TgpGxIl67UnSAWEtPEBbNj7q62mD5',
         },
       ),
     );
@@ -23,7 +24,8 @@ class CatRepository {
           id: catData['id'] ?? '',
           imageUrl: catData['url'] ?? '',
           breedName: catData['breeds'][0]['name'] ?? 'Unknown',
-          description: catData['breeds'][0]['description'] ?? 'No description available',
+          description:
+              catData['breeds'][0]['description'] ?? 'No description available',
         );
       } else {
         throw Exception('Информация о породе отсутствует');

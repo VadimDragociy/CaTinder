@@ -26,7 +26,9 @@ class CatDetailPage extends StatelessWidget {
               height: 300,
               width: double.infinity,
               fit: BoxFit.cover,
-              placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+              placeholder:
+                  (context, url) =>
+                      const Center(child: CircularProgressIndicator()),
             ),
             const SizedBox(height: 20),
             Padding(

@@ -1,11 +1,12 @@
 // blocs/liked_cat_cubit.dart
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../models/cat.dart';
-import '../../models/liked_cat.dart';
+import 'package:catinder/models/cat.dart';
+import 'package:catinder/models/liked_cat.dart';
 
 class LikedCatState {
   final List<LikedCat> likedCats;
-  final String filter; // Фильтрация по названию породы; пустая строка – нет фильтра
+  final String
+  filter;
 
   int get likeCount => likedCats.length;
   LikedCatState({required this.likedCats, this.filter = ''});
@@ -27,7 +28,9 @@ class LikedCatCubit extends Cubit<LikedCatState> {
   }
 
   void removeLikedCat(LikedCat likedCat) {
-    emit(state.copyWith(likedCats: List.from(state.likedCats)..remove(likedCat)));
+    emit(
+      state.copyWith(likedCats: List.from(state.likedCats)..remove(likedCat)),
+    );
   }
 
   void updateFilter(String filter) {
@@ -37,8 +40,11 @@ class LikedCatCubit extends Cubit<LikedCatState> {
   List<LikedCat> get filteredLikedCats {
     if (state.filter.isEmpty) return state.likedCats;
     return state.likedCats
-        .where((likedCat) =>
-        likedCat.cat.breedName.toLowerCase().contains(state.filter.toLowerCase()))
+        .where(
+          (likedCat) => likedCat.cat.breedName.toLowerCase().contains(
+            state.filter.toLowerCase(),
+          ),
+        )
         .toList();
   }
 }
