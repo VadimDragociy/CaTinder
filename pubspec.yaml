@@ -8,6 +8,12 @@ environment:
   sdk: ^3.7.0
 
 dependencies:
+  path: any
+  path_provider: ^2.0.0
+  sqlite3_flutter_libs: ^0.5.0
+  connectivity_plus: ^4.0.0
+  drift: ^2.15.0
+  drift_flutter: ^0.2.4
   get_it:
   flutter_bloc:
   flutter_launcher_icons: ^0.14.3
@@ -18,9 +24,13 @@ dependencies:
   cupertino_icons: ^1.0.8
 
 dev_dependencies:
+  drift_dev: ^2.3.0
+  mocktail: ^0.3.0
+  bloc_test: ^9.0.0
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  build_runner: ^2.4.15
 
 flutter_icons:
   android: true

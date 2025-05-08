@@ -7,6 +7,7 @@ import 'package:catinder/domain/usecases/get_random_cat.dart';
 import 'package:catinder/blocs/cat_bloc.dart';
 import 'package:catinder/blocs/liked_cat_cubit.dart';
 import 'package:catinder/screens/home_screen.dart';
+import 'package:catinder/utils/connectivity_wrapper.dart';
 
 void main() {
   setup();
@@ -19,7 +20,7 @@ void main() {
         BlocProvider(
           create: (_) => CatBloc(getRandomCat: getRandomCat)..add(FetchCat()),
         ),
-        BlocProvider(create: (_) => LikedCatCubit()),
+        BlocProvider(create: (_) => LikedCatCubit(catRepository)),
       ],
       child: const CatApp(),
     ),
@@ -34,6 +35,9 @@ class CatApp extends StatelessWidget {
     return MaterialApp(
       title: 'Cat Tinder',
       theme: ThemeData(primarySwatch: Colors.blue),
+      builder: (context, child) {
+        return ConnectivityWrapper(child: child!);
+      },
       home: const CatHomePage(),
     );
   }

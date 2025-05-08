@@ -35,7 +35,9 @@ class CatHomePage extends StatelessWidget {
               builder:
                   (context) => AlertDialog(
                     title: const Text('Ошибка сети'),
-                    content: Text(state.message),
+                    content: const Text(
+                      'Упс! Кажется, вы не подключены к сети',
+                    ),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(context),

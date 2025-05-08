@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:catinder/blocs/liked_cat_cubit.dart';
 import 'package:catinder/screens/detailed_screen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class LikedCatsScreen extends StatelessWidget {
   const LikedCatsScreen({super.key});
@@ -40,11 +41,22 @@ class LikedCatsScreen extends StatelessWidget {
                     return Card(
                       margin: const EdgeInsets.all(8.0),
                       child: ListTile(
-                        leading: Image.network(
-                          likedCat.cat.imageUrl,
+                        leading: CachedNetworkImage(
                           width: 80,
                           height: 80,
                           fit: BoxFit.cover,
+                          imageUrl: likedCat.cat.imageUrl,
+                          placeholder:
+                              (_, __) => const SizedBox(
+                                width: 80,
+                                height: 80,
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                ),
+                              ),
+                          errorWidget: (_, __, ___) => const Icon(Icons.error),
                         ),
                         title: Text(likedCat.cat.breedName),
                         subtitle: Text(

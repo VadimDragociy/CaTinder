@@ -23,12 +23,11 @@ class CatDetailPage extends StatelessWidget {
           children: [
             CachedNetworkImage(
               imageUrl: imageUrl,
-              height: 300,
+              placeholder: (_, __) => const CircularProgressIndicator(),
+              errorWidget: (_, __, ___) => const Icon(Icons.error),
+              height: MediaQuery.of(context).size.height / 3,
               width: double.infinity,
               fit: BoxFit.cover,
-              placeholder:
-                  (context, url) =>
-                      const Center(child: CircularProgressIndicator()),
             ),
             const SizedBox(height: 20),
             Padding(
